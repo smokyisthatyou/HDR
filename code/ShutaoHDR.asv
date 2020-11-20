@@ -33,9 +33,7 @@ numImages = size(ImContrast,3);
 [BestContrast, BestContrastIndex] = max(ImContrast, [], 3);
 posVector = (1:numImages)';
 pos3DMatrix = permute(zeros(numImages, height, width) + posVector, [3 2 1]);
-% ImResult = max(zeros(width, height, numImages), -(pos3DMatrix - BestContrastIndex).^2 + 1);
-ImResult = max(zeros(width, height, numImages), min(pos3DMatrix - BestContrastIndex,
-                                                BestContrastIndex - pos3DMatrix));
+ImResult = max(zeros(width, height, numImages), -(pos3DMatrix - BestContrastIndex).^2 + 1)
 
 % Characteristic = zeros(size(ImContrast));
 % Characteristic = Characteristic + 1.*
