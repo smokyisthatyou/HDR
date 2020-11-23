@@ -10,6 +10,10 @@ end
 %     image{i} = imread(strcat("C:/Users/fraro/Desktop/esempi_matlab/hdr1/image",int2str(i),".tif"));
 % end
 
+
+% LOCAL CONTRAST
+
+
 HFilter = [0 -1 0; -1 4 -1; 0 -1 0];
 
 for k=1:size(image,2)
@@ -19,7 +23,9 @@ for k=1:size(image,2)
     GrayScaleIm(:,:,k) = uint8(CurrentIm(:,:,1) .* 0.299 + CurrentIm(:,:,2) .* 0.587 + CurrentIm(:,:,3) .* 0.114);
 %     figure('Name', 'Grayscaled'); imshow(GrayScaleIm);
 
-    ImContrast(:,:,k) = conv2(double(GrayScaleIm(:,:,k)), HFilter);
+    ImC(:,:,k) = conv2(double(GrayScaleIm(:,:,k)), HFilter);
+    ImContrast = ImC(2:end-1,2:end-1,:); %removes zero-padding from filter2
+    size(ImContrast)
     
 %     figure('Name', 'ConstrastSharpen'); imshow(ImContrast1);
 
@@ -27,16 +33,46 @@ for k=1:size(image,2)
 %     ImContrast2 = filter2(LFilter, double(GrayScaleIm), 'same');
 %     figure('Name', 'ConstrastSharpenLaplacian'); imshow(ImContrast2);
 end
-width = size(ImContrast,1);
-height = size(ImContrast,2);
+width = size(ImContrast,1)
+height = size(ImContrast,2)
 numImages = size(ImContrast,3);
+
 [BestContrast, BestContrastIndex] = max(ImContrast, [], 3);
 posVector = (1:numImages)';
 pos3DMatrix = permute(zeros(numImages, height, width) + posVector, [3 2 1]);
-% ImResult = max(zeros(width, height, numImages), -(pos3DMatrix - BestContrastIndex).^2 + 1);
-ImResult = max(zeros(width, height, numImages), min(pos3DMatrix - BestContrastIndex,
-                                                BestContrastIndex - pos3DMatrix));
+size(pos3DMatrix)
+ImBinContrast = max(0, -(pos3DMatrix - BestContrastIndex).^2 + 1);
+% ImBinContrast = max(zeros(width, height, numImages), -(pos3DMatrix - BestContrastIndex).^2 + 1);
+% figure('Name', 'Image 1: Binary Local Best Contrast 1'); imshow(ImBinContrast(:,:,1));
+% figure('Name', 'Image 7: Binary Local Best Contrast 7'); imshow(ImBinContrast(:,:,7));
+% figure('Name', 'Image 12: Binary Local Best Contrast 12'); imshow(ImBinContrast(:,:,12));
+% ImResult = max(zeros(width, height, numImages), min(pos3DMatrix - BestContrastIndex,
+%                                                 BestContrastIndex - pos3DMatrix));
 
-% Characteristic = zeros(size(ImContrast));
-% Characteristic = Characteristic + 1.*
+% BRIGHTNESS
+
+T = 10;
+T1 = 255 - T;
+GrayScaleIm1 = double(GrayScaleIm);
+ImBinBrightness = min(1, max(0, GrayScaleIm1 - T)) .* min(1, max(0, T1 - GrayScaleIm1));
+% figure('Name', 'Image 1: Binary Brightness 1'); imshow(ImBinBrightness(:,:,1));
+% figure('Name', 'Image 7: Binary Brightness 7'); imshow(ImBinBrightness(:,:,7));
+% figure('Name', 'Image 12: Binary Brightness 12'); imshow(ImBinBrightness(:,:,12));
+size(ImBinContrast)
+size(ImBinBrightness)
+size(image{1})
+W = ImBinContrast .* ImBinBrightness;
+figure('Name', 'Image 1: Binary 1'); imshow(W(:,:,1));
+figure('Name', 'Image 7: Binary 7'); imshow(W(:,:,7));
+figure('Name', 'Image 12: Binary 12'); imshow(W(:,:,12));
+
+% for k=1:numImages
+%     ZigZagIm(:,k) = zigzag(image{k});
+% end
+% size(ZigZagIm)
+% 
+% alpha = 0.5;
+% for k=1:numImages
+%     for j=1:width*height
+%         W
 
