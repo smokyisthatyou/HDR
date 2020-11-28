@@ -54,7 +54,9 @@ ImBinContrast = max(0, -(pos3DMatrix - BestContrastIndex).^2 + 1);
 T = 10;
 T1 = 255 - T;
 GrayScaleIm1 = double(GrayScaleIm);
-ImBinBrightness = min(1, max(0, GrayScaleIm1 - T)) .* min(1, max(0, T1 - GrayScaleIm1));
+ImBrightness = GrayScaleIm1 ./ sum(GrayScaleIm1,3);
+
+% ImBinBrightness = min(1, max(0, GrayScaleIm1 - T)) .* min(1, max(0, T1 - GrayScaleIm1));
 % figure('Name', 'Image 1: Binary Brightness 1'); imshow(ImBinBrightness(:,:,1));
 % figure('Name', 'Image 7: Binary Brightness 7'); imshow(ImBinBrightness(:,:,7));
 % figure('Name', 'Image 12: Binary Brightness 12'); imshow(ImBinBrightness(:,:,12));
@@ -66,15 +68,13 @@ for k=1:numImages
     ImageVector(:,:,:,k) = image{k};
 end
 
-figure('Name', 'immagine 12'); imshow(ImageVector(:,:,:,11));
 size(ImageVector)
-W = ImBinContrast .* ImBinBrightness;
-W = double(W);
+W = double(ImBinContrast) + ImBrightness;
+Wnormalized = W ./ sum(W,3);
 % figure('Name', 'Image 1: Binary Brightness 1'); imshow(W(:,:,1));
 % figure('Name', 'Image 7: Binary Brightness 7'); imshow(W(:,:,7));
 % figure('Name', 'Image 12: Binary Brightness 12'); imshow(W(:,:,12));
-size(W)
-ScaryImage = uint8(permute(sum(W .* permute(double(ImageVector), [1 2 4 3]), 3), [1 2 4 3]));
+ScaryImage = uint8(permute(sum(Wnormalized .* permute(double(ImageVector), [1 2 4 3]), 3), [1 2 4 3]));
 size(ScaryImage)
 % figure('Name', 'Image 1: Binary 1'); imshow(ScaryImage(:,:,:,1));
 % figure('Name', 'Image 7: Binary 7'); imshow(ScaryImage(:,:,:,7));
@@ -86,4 +86,9 @@ size(ScaryImage)
 % figure('Name', 'Image 12: Binary 12'); imshow(W(:,:,12));
 
 figure('Name', 'Blended'); imshow(ScaryImage);
+
+Filtered = imgdiffusefilt(ScaryImage);
+
+figure('Name', 'Filtered'); imshow(Filtered);
+
 
