@@ -25,7 +25,7 @@ for k=1:size(image,2)
 
     ImC(:,:,k) = conv2(double(GrayScaleIm(:,:,k)), HFilter);
     ImContrast = ImC(2:end-1,2:end-1,:); %removes zero-padding from filter2
-    size(ImContrast)
+%     size(ImContrast)
     
 %     figure('Name', 'ConstrastSharpen'); imshow(ImContrast1);
 
@@ -33,14 +33,14 @@ for k=1:size(image,2)
 %     ImContrast2 = filter2(LFilter, double(GrayScaleIm), 'same');
 %     figure('Name', 'ConstrastSharpenLaplacian'); imshow(ImContrast2);
 end
-width = size(ImContrast,1)
-height = size(ImContrast,2)
+width = size(ImContrast,1);
+height = size(ImContrast,2);
 numImages = size(ImContrast,3);
 
 [BestContrast, BestContrastIndex] = max(ImContrast, [], 3);
 posVector = (1:numImages)';
 pos3DMatrix = permute(zeros(numImages, height, width) + posVector, [3 2 1]);
-size(pos3DMatrix)
+% size(pos3DMatrix)
 ImBinContrast = max(0, -(pos3DMatrix - BestContrastIndex).^2 + 1);
 % ImBinContrast = max(zeros(width, height, numImages), -(pos3DMatrix - BestContrastIndex).^2 + 1);
 % figure('Name', 'Image 1: Binary Local Best Contrast 1'); imshow(ImBinContrast(:,:,1));
@@ -58,21 +58,32 @@ ImBinBrightness = min(1, max(0, GrayScaleIm1 - T)) .* min(1, max(0, T1 - GraySca
 % figure('Name', 'Image 1: Binary Brightness 1'); imshow(ImBinBrightness(:,:,1));
 % figure('Name', 'Image 7: Binary Brightness 7'); imshow(ImBinBrightness(:,:,7));
 % figure('Name', 'Image 12: Binary Brightness 12'); imshow(ImBinBrightness(:,:,12));
-size(ImBinContrast)
-size(ImBinBrightness)
-size(image{1})
-W = ImBinContrast .* ImBinBrightness;
-figure('Name', 'Image 1: Binary 1'); imshow(W(:,:,1));
-figure('Name', 'Image 7: Binary 7'); imshow(W(:,:,7));
-figure('Name', 'Image 12: Binary 12'); imshow(W(:,:,12));
+% size(ImBinContrast)
+% size(ImBinBrightness)
+% size(image{1})
 
-% for k=1:numImages
-%     ZigZagIm(:,k) = zigzag(image{k});
-% end
-% size(ZigZagIm)
+for k=1:numImages
+    ImageVector(:,:,:,k) = image{k};
+end
+
+figure('Name', 'immagine 12'); imshow(ImageVector(:,:,:,11));
+size(ImageVector)
+W = ImBinContrast .* ImBinBrightness;
+W = double(W);
+% figure('Name', 'Image 1: Binary Brightness 1'); imshow(W(:,:,1));
+% figure('Name', 'Image 7: Binary Brightness 7'); imshow(W(:,:,7));
+% figure('Name', 'Image 12: Binary Brightness 12'); imshow(W(:,:,12));
+size(W)
+ScaryImage = uint8(permute(sum(W .* permute(double(ImageVector), [1 2 4 3]), 3), [1 2 4 3]));
+size(ScaryImage)
+% figure('Name', 'Image 1: Binary 1'); imshow(ScaryImage(:,:,:,1));
+% figure('Name', 'Image 7: Binary 7'); imshow(ScaryImage(:,:,:,7));
+% figure('Name', 'Image 12: Binary 12'); imshow(ScaryImage(:,:,:,12));
+
 % 
-% alpha = 0.5;
-% for k=1:numImages
-%     for j=1:width*height
-%         W
+% figure('Name', 'Image 1: Binary 1'); imshow(W(:,:,1));
+% figure('Name', 'Image 7: Binary 7'); imshow(W(:,:,7));
+% figure('Name', 'Image 12: Binary 12'); imshow(W(:,:,12));
+
+figure('Name', 'Blended'); imshow(ScaryImage);
 
