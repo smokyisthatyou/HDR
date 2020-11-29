@@ -18,13 +18,13 @@ for k=1:size(image,2)
 end
 %size(EntropyImages)
 
-numImages = 12;
-for k=1:numImages
+
+for k=1:size(image,2)
     ImageVector(:,:,:,k) = image{k};
 end
 
 %size(ImageVector)
 
-ScaryImageNotNormalized = sum(EntropyImages.*permute(double(ImageVector),[1,2,4,3]),3)/sum(EntropyImages,3);
+ScaryImage = sum(EntropyImages.*permute(double(ImageVector),[1,2,4,3]),3)./sum(EntropyImages,3);
 size(ScaryImage)
 
