@@ -6,5 +6,5 @@ function sharpened_image_vector = high_pass_filtering(grayscale_image_vector)
         padded_sharpened_i_v(:,:,k) = conv2(double(grayscale_image_vector(:,:,k)), HP_filter);
     end
     
-    sharpened_image_vector = padded_sharpened_i_v(2:end-1,2:end-1,:);
+    sharpened_image_vector = im2uint8(padded_sharpened_i_v(2:end-1,2:end-1,:));
 end

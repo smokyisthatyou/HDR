@@ -1,8 +1,9 @@
 clear all; close all;
 
-image_vector = read_images("..\test_images_3\", "tif");
+image_vector = read_images("..\test_images_2\", "tif");
 grayscale_image_vector = grayscale(image_vector);
 
+sum(image_vector,4)
 % Local contrast & sharpness measure
 sharpened_image_vector = high_pass_filtering(grayscale_image_vector);
 binary_sharpened_iv = best_image_contrast(sharpened_image_vector);
@@ -18,3 +19,7 @@ figure('Name', 'HDR unfiltered'); imshow(HDR_image);
 % Filtering
 HDR_filtered = imguidedfilter(HDR_image);
 figure('Name', 'HDR'); imshow(HDR_filtered);
+
+figure('Name', 'Image 1: Binary Local Best Contrast 1'); imshow(sharpened_image_vector(:,:,1));
+figure('Name', 'Image 3: Binary Local Best Contrast 3'); imshow(binary_sharpened_iv(:,:,3));
+figure('Name', 'Image 6: Binary Local Best Contrast 6'); imshow(binary_sharpened_iv(:,:,6));
