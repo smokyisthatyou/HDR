@@ -8,4 +8,5 @@ function image_vector = read_images(folder_name, extension)
     for k=1:size(cell_images,2)
         image_vector(:,:,:,k) = cell_images{k};
     end
+    image_vector = im2double(image_vector); 
 end
