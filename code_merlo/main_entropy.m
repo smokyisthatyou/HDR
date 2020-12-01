@@ -1,6 +1,6 @@
 clear all; close all;
 
-image_vector = read_images("..\test_images_4\", "tif");
+image_vector = read_images("..\test_images_3\", "tif");
 
 %save images' luminance in a vector
 luminance_image_vector = rgb_to_luminance (image_vector);
