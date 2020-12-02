@@ -26,4 +26,3 @@ W = (1./(1 + exp(-(modulated_entropy_iv .* binary_sharpened_iv + modulated_brigh
 % creation of hdr image
 ScaryImage = hdr(W, image_vector);
 figure('Name', 'Result'); imshow(ScaryImage);
-
