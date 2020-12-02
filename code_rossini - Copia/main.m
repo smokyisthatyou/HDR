@@ -9,7 +9,6 @@ binary_sharpened_iv = best_image_contrast(sharpened_image_vector);
 
 % Brightness measure
 normalized_brightness_iv = brightness_measure(grayscale_image_vector);
-max(normalized_brightness_iv, [], 'all')
 
 % W measure: local contrast + brightness
 W_normalized = W_measure(binary_sharpened_iv, normalized_brightness_iv);
