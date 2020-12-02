@@ -9,11 +9,9 @@ grayscale_iv = double(grayscale(image_vector));
 % normalize brightness 
 normalized_brightness_iv = grayscale_iv ./ sum(grayscale_iv,3);
 
-% TOGLLIERE max(normalized_brightness_iv, [], 'all')
-
 % HDR image
 HDR_image = create_HDR(image_vector, normalized_brightness_iv);
-figure('Name', 'HDR'); imshow(HDR_image);
+figure('Name', 'Result - brightness only'); imshow(HDR_image);
 
 % increase saturation to improve image quality
 HSV_im = rgb2hsv(HDR_image);

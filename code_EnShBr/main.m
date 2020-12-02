@@ -19,22 +19,19 @@ max_brightness = max(brightness_iv,[], 'all');
 modulated_brightness_iv = brightness_iv / max_brightness;
 modulated_entropy_iv = entropy_image_vector / max_entropy;
 
-% TOGLIERE : max_modulated_brightness = max(modulated_brightness_iv,[], 'all');
-% TOGLIERE : max_modulated_entropy = max(modulated_entropy_iv,[], 'all');
-
 % calculate weights with entropy and brightness (sum brightness to avoid
 % excessively dark images)
 W = modulated_entropy_iv .* binary_sharpened_iv + modulated_brightness_iv;
 
 % creation of hdr image
 ScaryImage = hdr(W, image_vector);
-figure('Name', 'Result - no filter'); imshow(ScaryImage);
+figure('Name', 'Result - EnShBr, no filter'); imshow(ScaryImage);
 
 % filter with edge preserving self-guided filter
 ScaryImage2 = imguidedfilter(ScaryImage);
-figure('Name', 'Result - self-guided filter'); imshow(ScaryImage2);
+figure('Name', 'Result - EnShBr, self-guided filter'); imshow(ScaryImage2);
 
 % gaussian filterd image
 ScaryImage3 = imgaussfilt(ScaryImage, 1.5);
-figure('Name', 'Result - gaussian filter'); imshow(ScaryImage2);
+figure('Name', 'Result - EnShBr ,gaussian filter'); imshow(ScaryImage2);
 
