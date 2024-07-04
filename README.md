@@ -1,9 +1,9 @@
-**authors:**\
+**authori:**\
 Francesco Rossini\
 Sibilla Merlo\
-**date:**\
+**data:**\
 December 2020\
-**title:**\
+**titolo:**\
 "High Dynamic Range: un approccio incrementale"
 
 
